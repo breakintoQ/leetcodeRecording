@@ -21,8 +21,8 @@ class Solution:
     class Solution:
     def majorityElement(self, nums: List[int]) -> int:
         counts = collections.Counter(nums)
-        return max(counts.keys(), key=counts.get)
+        return max(counts.keys(), key=counts.get)   第一个参数是比较元素集合，第二个是比较每个对象的哪个属性
     这是官方给的。我喷了呀，又学习内部库函数了家人们。暴力思路两个O(n),没啥可说，纯学数据结构了属于。思路超级简单超级暴力。
     剩下官方解可以看但是我觉得我必定想不出来，嗯啊，小时候上的课都已经就饭吃了
-    
+
     """
