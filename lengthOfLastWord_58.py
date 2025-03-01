@@ -20,3 +20,5 @@ class Solution:
                 
         else:
             return (length-1)-space_list[l-1]
+        
+# java很简单，py不知道有没有对应库。哎呀想复杂了，应该直接查字母不应该查空格，空格情况太多了
