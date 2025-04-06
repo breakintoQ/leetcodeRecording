@@ -1,0 +1,83 @@
+# # Definition for a binary tree node.
+# # class TreeNode:
+# #     def __init__(self, val=0, left=None, right=None):
+# #         self.val = val
+# #         self.left = left
+# #         self.right = right
+# class BSTIterator:
+#     def __init__(self, root: Optional[TreeNode]):
+#         import collections
+#         self.root = root
+#         queue = collections.deque([root])
+#         self.result = []
+#         self.count = -1
+#         while queue:
+#             l = len(queue)
+#             for _ in l:
+#                 cnt = queue.popleft()
+#                 self.result.append(cnt.val)
+#                 if cnt.left:
+#                     queue.append(cnt.left)
+#                 if cnt.right:
+#                     queue.append(cnt.right)
+
+#     def next(self) -> int:
+#         self.count+=1
+#         return self.result[self.count]
+
+#     def hasNext(self) -> bool:
+#         if self.count!=len(self.result)-1:
+#             return True
+#         else:
+#             return False
+
+
+# # Your BSTIterator object will be instantiated and called as such:
+# # obj = BSTIterator(root)
+# # param_1 = obj.next()
+# # param_2 = obj.hasNext()
+
+
+#错了，应该是中序不是层序
+
+
+# Definition for a binary tree node.
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+from typing import Optional
+
+class BSTIterator:
+    def __init__(self, root: Optional[TreeNode]):
+        self.stack = []  # 用于模拟中序遍历的栈
+        self._leftmost_inorder(root)  # 初始化时将左子树的所有节点压入栈
+
+    def _leftmost_inorder(self, node: Optional[TreeNode]):
+        """
+        将从当前节点开始的所有左子节点压入栈
+        """
+        while node:
+            self.stack.append(node)
+            node = node.left
+
+    def next(self) -> int:
+        """
+        返回下一个最小的节点值
+        """
+        # 栈顶节点是当前中序遍历的下一个节点
+        topmost_node = self.stack.pop()
+
+        # 如果该节点有右子树，将右子树的所有左子节点压入栈
+        if topmost_node.right:
+            self._leftmost_inorder(topmost_node.right)
+
+        return topmost_node.val
+
+    def hasNext(self) -> bool:
+        """
+        如果栈不为空，则还有下一个节点
+        """
+        return len(self.stack) > 0
