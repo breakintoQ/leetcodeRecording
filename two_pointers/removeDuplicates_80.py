@@ -34,6 +34,9 @@ class Solution:
                 slow += 1
             fast += 1
         return slow
+    
+
+#这个真的稍微有点反直觉。所以可能不记得。但是考的概率也不算大，记住指针从2开始这个提示点
 
 #思路还是不太对。
 # 使用两个指针 slow 和 fast，初始值都为2。slow 指针用于构建新的数组，fast 指针用于遍历原数组。
@@ -44,3 +47,26 @@ class Solution:
 # 如果相等，说明当前元素已经在新数组中出现了两次，不需要再插入，直接将 fast 指针向前移动一位。
 # 其实跟只能出现一个重复的思路一样，一个慢指针用来构建快指针用来遍历，只要不在代构建数组中（在数组中次数小于2）
 # 的进行赋值。
+
+
+
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        l = len(nums)
+        i = 0
+        j = 0
+        while j < l:
+            if nums[i]!=nums[j]:
+                if nums[i+1]<nums[i]:
+                    i+=1
+                    nums[i]=nums[j]
+                else:
+                    i+=2
+                    nums[i]=nums[j]
+            j+=1
+            if j == l and nums[l-1] == nums[i]:
+                i+=1
+                nums[i]=nums[j-1]
+
+        return i+1
+#第二遍确实是用双指针了，但是移动的不对

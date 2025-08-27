@@ -73,3 +73,49 @@ class Solution:
 #             self.prev = node
 
 #         dfs(root)
+
+
+
+
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+#简单思路：遍历取出来后直接在root上加，我试试，就是会新建很多node说是
+class Solution:
+    def flatten(self, root: Optional[TreeNode]) -> None:
+        """
+        Do not return anything, modify root in-place instead.
+        """
+
+        if not root:
+            return 
+        
+        result = []
+
+        def dfs(root):
+            if root:
+
+                result.append(root.val)
+
+                if root.left:
+                    dfs(root.left)
+            
+
+                if root.right:
+                    dfs(root.right)
+        dfs(root)
+
+        root.left = None
+
+        for r in result[1:]:
+            node = TreeNode(r)
+            root.right = node
+            root = root.right
+
+
+#这个做法没问题，但是可以直接把root加进list而不是val这样在循环里把每个节点的left置为空，right为列表的下个节点就行了
+        

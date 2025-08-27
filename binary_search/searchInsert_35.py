@@ -32,9 +32,39 @@ class Solution:
             mid = l + (r - l) // 2
             if nums[mid] < target:
                 l = mid + 1
-            else:
+            elif nums[mid]>target:
                 r = mid - 1
+            else:
+                return mid
         return l
     
 #不用递归。没那么复杂，想啥呢这是。记住最后循环结束条件是l=r+1，所以l的左边一定小于tar，r结尾，r的右边一定大于等于tar，l开头。
-# 因此返回的l下标一定是所求位置。
+# 因此返回的l下标一定是所求位置。这里的思维点在返回的不是mid是l
+
+
+
+class Solution:
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        l = 0
+        r=len(nums)-1
+        if len(nums) == 1:
+            mid = int((l+r/2))
+        if len(nums) == 2:
+            mid = int((l+r/2))+1
+        while l<r-1:
+            mid = int((l+r)/2)
+            if target < nums[mid]:
+                r = mid
+            elif target > nums[mid]:
+                l = mid
+            else:
+                break
+        
+        if target > nums[r]:
+            return r+1
+        elif target <nums[l]:
+            return l
+        else:
+            return mid
+
+#这个还是不对，就按精确查找找就行

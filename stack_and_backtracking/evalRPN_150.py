@@ -65,3 +65,35 @@ class Solution:
                     stack.append(int(a / b))
         
         return stack[-1]
+    
+
+
+class Solution:
+    def evalRPN(self, tokens: List[str]) -> int:
+        stack = []
+
+        for i in range (len(tokens)):
+            if tokens[i] not in {"+","-","*","/"}:
+                stack.append(int(tokens[i]))
+            elif tokens[i] == "+":
+                temp = stack[-1]+stack[-2]
+                stack.pop()
+                stack.pop()
+                stack.append(temp)
+            elif tokens[i] == "-":
+                temp = stack[-2]-stack[-1]
+                stack.pop()
+                stack.pop()
+                stack.append(temp)
+            elif tokens[i] == "*":
+                temp = stack[-2]*stack[-1]
+                stack.pop()
+                stack.pop()
+                stack.append(temp)
+            elif tokens[i] == "/":
+                temp = int(stack[-2] / stack[-1])
+                stack.pop()
+                stack.pop()
+                stack.append(temp)
+        
+        return int(stack[-1])

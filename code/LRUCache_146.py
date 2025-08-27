@@ -49,72 +49,135 @@ class LRUCache:
 
     #这个有点不会，直接copiot大人教
 
+# class Node:
+#     def __init__(self, key: int, value: int):
+#         self.key = key
+#         self.value = value
+#         self.prev = None
+#         self.next = None
+
+# class LRUCache:
+
+#     def __init__(self, capacity: int):
+#         self.capacity = capacity
+#         self.cache = {}  # 哈希表：key -> Node
+#         # 创建伪头部和伪尾部节点
+#         self.head = Node(0, 0)
+#         self.tail = Node(0, 0)
+#         self.head.next = self.tail
+#         self.tail.prev = self.head
+
+#     def _remove(self, node: Node):
+#         """从链表中删除节点"""
+#         prev = node.prev
+#         next = node.next
+#         prev.next = next
+#         next.prev = prev
+
+#     def _add_to_head(self, node: Node):
+#         """将节点添加到链表头部"""
+#         node.next = self.head.next
+#         node.prev = self.head
+#         self.head.next.prev = node
+#         self.head.next = node
+
+#     def _move_to_head(self, node: Node):
+#         """将节点移动到链表头部，其实没有直接移动，只是先删再加"""
+
+#         self._remove(node)
+#         self._add_to_head(node)
+
+#     def _pop_tail(self) -> Node:
+#         """移除链表尾部节点"""
+#         node = self.tail.prev
+#         self._remove(node)
+#         return node
+
+#     def get(self, key: int) -> int:
+#         if key in self.cache:
+#             # 如果 key 存在，移动对应节点到链表头部
+#             node = self.cache[key]
+#             self._move_to_head(node)
+#             return node.value
+#         return -1
+
+#     def put(self, key: int, value: int) -> None:
+#         if key in self.cache:
+#             # 如果 key 已经存在，更新节点值并移动到链表头部
+#             node = self.cache[key]
+#             node.value = value
+#             self._move_to_head(node)
+#         else:
+#             # 如果 key 不存在，创建新节点
+#             new_node = Node(key, value)
+#             self.cache[key] = new_node
+#             self._add_to_head(new_node)
+#             # 如果缓存超过容量，移除最久未使用的节点
+#             if len(self.cache) > self.capacity:
+#                 tail = self._pop_tail()
+#                 del self.cache[tail.key]
+
+            
+#这个是使用双向链表的方法,手撕应该要用这个
+
+
 class Node:
-    def __init__(self, key: int, value: int):
+    def __init__(self,key,value,prev = None,next = None):
         self.key = key
         self.value = value
-        self.prev = None
-        self.next = None
+        self.prev = prev
+        self.next = next
 
 class LRUCache:
-
-    def __init__(self, capacity: int):
-        self.capacity = capacity
-        self.cache = {}  # 哈希表：key -> Node
-        # 创建伪头部和伪尾部节点
-        self.head = Node(0, 0)
-        self.tail = Node(0, 0)
+    def __init__(self,capicity:int):
+        self.capicity = capicity
+        self.cache = {}
+        self.head = Node(0,0)
+        self.tail = Node(0,0)
         self.head.next = self.tail
         self.tail.prev = self.head
+    
+    def _remove(self,node:Node):
+        node_next = node.next
+        node_prev = node.prev
+        node.prev.next = node_next
+        node.next.prev = node_prev
 
-    def _remove(self, node: Node):
-        """从链表中删除节点"""
-        prev = node.prev
-        next = node.next
-        prev.next = next
-        next.prev = prev
-
-    def _add_to_head(self, node: Node):
-        """将节点添加到链表头部"""
-        node.next = self.head.next
+    def _add_to_head(self, node:Node):
+        cnt_first = self.head.next
+        node.next = cnt_first
         node.prev = self.head
-        self.head.next.prev = node
         self.head.next = node
+        cnt_first.prev = node
 
-    def _move_to_head(self, node: Node):
-        """将节点移动到链表头部"""
+    def _move_to_head(self, node:Node):
         self._remove(node)
         self._add_to_head(node)
-
-    def _pop_tail(self) -> Node:
-        """移除链表尾部节点"""
-        node = self.tail.prev
-        self._remove(node)
-        return node
-
+    
+    def _pop_tail(self)->Node:
+        cnt_tail = self.tail.prev
+        self._remove(cnt_tail)
+        return cnt_tail
+        
     def get(self, key: int) -> int:
         if key in self.cache:
-            # 如果 key 存在，移动对应节点到链表头部
             node = self.cache[key]
             self._move_to_head(node)
             return node.value
-        return -1
+        else:
+            return -1
+
 
     def put(self, key: int, value: int) -> None:
         if key in self.cache:
-            # 如果 key 已经存在，更新节点值并移动到链表头部
             node = self.cache[key]
             node.value = value
             self._move_to_head(node)
         else:
-            # 如果 key 不存在，创建新节点
-            new_node = Node(key, value)
-            self.cache[key] = new_node
-            self._add_to_head(new_node)
-            # 如果缓存超过容量，移除最久未使用的节点
-            if len(self.cache) > self.capacity:
-                tail = self._pop_tail()
-                del self.cache[tail.key]
-
-            
-#这个是使用双向链表的方法
+            node = Node(key,value)
+            self.cache[key]=node
+            self._add_to_head(node)
+        
+        if len(self.cache)>self.capicity:
+            tail = self._pop_tail()
+            del self.cache[tail.key]

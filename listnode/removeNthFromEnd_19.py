@@ -58,4 +58,66 @@ class Solution:
 #         slow.next = slow.next.next
 
 #         # 返回链表头节点
-#         return dummy.next
+#         return dummy.
+
+
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = ListNode(-1)
+        dummy.next = head
+
+        k = 0
+
+        while head:
+            k+=1
+            head = head.next
+        
+        if k == 1:
+            return None
+        
+        head = dummy.next
+
+        if k-n == 0:
+            return dummy.next.nexts
+
+        for _ in range(k-n-1):
+            head = head.next
+
+        
+        if head.next and head.next.next:
+            head.next = head.next.next
+        elif head.next and not head.next.next:
+            head.next = None
+
+
+        return dummy.next
+
+
+
+
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        #双指针再做一遍
+
+        dummy = ListNode(-1)
+        dummy.next = head
+
+        fast = head
+        slow = dummy
+
+        for i in range (n-1):
+            fast = fast.next
+
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next
+
+        slow.next = slow.next.next
+
+        return dummy.next

@@ -42,5 +42,40 @@ class Solution:
 #         return prehead.next
 
 
+
 #注释是官方题解，自己没写出来。感觉迭代的更容易理解一点。跟我思路基本一致，但是我卡在没设头节点了
 #还是不熟悉导致的，以后会更容易
+
+
+
+
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def mergeTwoLists(self, list1: Optional[ListNode], list2: Optional[ListNode]) -> Optional[ListNode]:
+        prev = ListNode(-1)
+        dummy = ListNode(-1)
+        
+        prev.next = dummy
+
+        while list1 and list2:
+            if list1.val>=list2.val:
+                cnt = ListNode(list2.val)
+                dummy.next = cnt
+                dummy = dummy.next
+                list2 = list2.next
+            else:
+                cnt = ListNode(list1.val)
+                dummy.next = cnt
+                dummy = dummy.next
+                list1 = list1.next
+        
+        if not list1 and list2:
+            dummy.next=list2
+        elif not list2 and list1:
+            dummy.next = list1
+
+        return prev.next.next

@@ -37,3 +37,26 @@ class Solution:  #递归
         return self.check(root.left, root.right)
     
     #这个要再看，感觉很奇怪的做法。仔细想想又不奇怪。嗯啊。左子树的左和右子树的右以及左子树的右和右子树的左都应该相同。
+
+
+    # Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        def check(p,q):
+            if not p and not q:
+                return True
+            elif not p or not q:
+                return False
+            else:
+                return p.val == q.val and check(p.left,q.right) and check(q.left,p.right)
+            
+        if not root:
+            return True
+        else:
+            return check(root.left,root.right)
+                
